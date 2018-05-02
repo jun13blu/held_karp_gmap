@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    #map {
+      height: 100%;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .loader {
+      position: relative;
+    }
+
+    .loader::after {
+      content: 'Loading...';
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, .7);
+      color: white;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script type="text/javascript" src="map.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU-vXpPlrm2_UBJYLzHznpvc_hhYORT8I&callback=initMap" async
+    defer></script>
+</body>
+</html
