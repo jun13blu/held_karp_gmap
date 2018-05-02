@@ -4,6 +4,10 @@ function initMap() {
     zoom: 11
   })
 
+  var infowindow = new google.maps.InfoWindow({
+    content: ''
+  })
+
   var directionsDisplay = new google.maps.DirectionsRenderer({ map })
 
   var directionsService = new google.maps.DirectionsService()
@@ -16,14 +20,16 @@ function initMap() {
 
   map.addListener('click', ({ latLng }) => {
     points = [...points, latLng]
-    points.length <= 1
-      ? setMarker(latLng)
-      : fetchDistanceMatrix(points, dists =>
-          fetchOptimumPaths(dists)
-            .then(paths => drawOptimumRoutes(paths))
-            .then(() => removeMarker())
-        )
+    points.length <= 1 ? setMarker(latLng) : calculateShortestPath(points)
   })
+
+  function calculateShortestPath(points) {
+    fetchDistanceMatrix(points, dists =>
+      fetchOptimumPaths(dists)
+        .then(paths => drawOptimumRoutes(paths))
+        .then(() => removeMarker())
+    )
+  }
 
   function setMarker(latLng) {
     marker = new google.maps.Marker({
@@ -41,12 +47,18 @@ function initMap() {
         destinations: points,
         travelMode: 'DRIVING'
       },
-      res =>
-        fn(
-          res.rows.map(row =>
+      res => {
+        try {
+          var dists = res.rows.map(row =>
             row.elements.map(element => element.distance.value)
           )
-        )
+          fn(dists)
+        } catch (err) {
+          console.log(err)
+          document.getElementById('map').classList.add('error')
+          document.getElementById('map').classList.remove('loader')
+        }
+      }
     )
   }
 

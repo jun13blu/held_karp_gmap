@@ -14,12 +14,13 @@
       padding: 0;
     }
 
-    .loader {
+    .loader,
+    .error {
       position: relative;
     }
 
-    .loader::after {
-      content: 'Loading...';
+    .loader::after,
+    .error::after {
       position: absolute;
       top: 0;
       left: 0;
@@ -31,7 +32,16 @@
       justify-content: center;
       align-items: center;
     }
+
+    .loader::after {
+      content: 'Loading...';
+    }
+
+    .error::after {
+      content: 'An error occured. Please try again.';
+    }
   </style>
+  <title>Held Karp Map</title>
 </head>
 
 <body>
